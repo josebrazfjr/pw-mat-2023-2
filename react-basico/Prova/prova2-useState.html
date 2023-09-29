@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    function Form() {
+
+      // Declarando um state para cada input
+      const [raioMaior, setRaioMaior] = React.useState()
+      const [raioMenor, setRaioMenor] = React.useState()
+
+      let area = Number(raioMaior) * Number(raioMenor) * Math.PI
+
+      return <>
+        <h1>Cálculo da área de uma elipse</h1>
+        <form>
+          <div>
+            <label>
+              <span>Medida do raio maior:</span><br />
+              <input value={raioMaior} type="number" onChange={event => setRaioMaior(event.target.value)} />
+            </label>
+          </div>
+          <div>
+            <label>
+              <span>Medida do raio menor:</span><br />
+              <input value={raioMenor} type="number" onChange={event => setRaioMenor(event.target.value)} />
+            </label>
+          </div>
+          <div>{
+            'Área: ' + area.toLocaleString('pt-br', { 
+              minimumFractionDigits: 4, 
+              maximumFractionDigits: 4 
+            })
+          }</div>
+        </form>
+      </>
+    }
+
+    const container = <>
+      <Form />
+    </>
+
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(container)
+
+  </script>
+  
+</body>
+</html>

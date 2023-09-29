@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    function Form() {
+
+      // Criando os refs, um para cada input
+      // e um para a div de resultado
+      const pesoRef = React.useRef()
+      const alturaRef = React.useRef()
+      const resultadoRef = React.useRef()
+
+      function handleChange(event) {
+        let peso = pesoRef.current.value
+        let altura = alturaRef.current.value
+        let imc = Number(peso) / Number(altura) ** 2
+        resultadoRef.current.textContent = 
+          'IMC: ' + imc.toLocaleString('pt-br', { 
+            minimumFractionDigits: 4, 
+            maximumFractionDigits: 4 
+          })
+      }
+
+      return <>
+        <h1>Cálculo do Índice de Massa Corporal</h1>
+        <form>
+          <div>
+            <label>
+              <span>Peso:</span><br />
+              <input ref={pesoRef} type="number" onChange={handleChange} />
+            </label>
+          </div>
+          <div>
+            <label>
+              <span>Altura:</span><br />
+              <input ref={alturaRef} type="number" onChange={handleChange} />
+            </label>
+          </div>
+          <div ref={resultadoRef}></div>
+        </form>
+      </>
+    }
+
+    const container = <>
+      <Form />
+    </>
+
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(container)
+
+  </script>
+  
+</body>
+</html>
