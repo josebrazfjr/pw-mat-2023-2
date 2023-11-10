@@ -8,15 +8,31 @@ import {PokemonForm, fetchPokemon, PokemonInfoFallback, PokemonDataView} from '.
 
 function PokemonInfo({pokemonName}) {
   // 🐨 crie o estado para o pokémon (null)
-  const [pokemon, setPokemon] = React.useState(null)
-  const [error, setError] = React.useState(null)
-  const [status, setStatus] = React.useState('idle')
+  // const [pokemon, setPokemon] = React.useState(null)
+  // const [error, setError] = React.useState(null)
+  // const [status, setStatus] = React.useState('idle')
+
+  // Criando uma única variável de estado, do tipo objeto,
+  // com a mesma funcionalidade das variáveis de estado avulsas
+  // comentadas acima
+  const [state, setState] = React.useState({
+    pokemon: null,
+    error: null,
+    status:'idle'
+  })
+  // Usando desestruturação para criar variáveis de estado somente-leitura
+  const { pokemon, error, status } = state
 
   // 🐨 crie React.useEffect de modo a ser chamado sempre que pokemonName mudar.
   // 💰 NÃO SE ESQUEÇA DO VETOR DE DEPENDÊNCIAS!
   React.useEffect(() => {
     requestPokemon()
   }, [pokemonName])
+
+  // useEffect() para contar a quantidade de vezes que o componente foi atualizado
+  React.useEffect(() => {
+    console.count('COMPONENTE ATUALIZADO')
+  }) // ~> sem vetor de dependências, será executado em qualquer mudança de estado
 
   async function requestPokemon(){
  
@@ -26,14 +42,18 @@ function PokemonInfo({pokemonName}) {
     
     // 🐨 antes de chamar `fetchPokemon`, limpe o estado atual do pokemon
     // ajustando-o para null.
-    setPokemon(null)
-    setError(null)
-    setStatus('idle') // Aguardando ação do usuário
+    // setPokemon(null)
+    // setError(null)
+    // setStatus('idle') // Aguardando ação do usuário
 
     try {
 
-      //Vamos disparar a requisição, e o resultado ficará pendente
-      setStatus('pending')
+      // ATUALIZAÇÃO DE UMA VARIÁVEL DE ESTADO DO TIPO OBJETO
+      // Primeiro, ...state copia os valores atuais da variável de estado
+      // Em seguida, são feitas atualizações nos campos necessários
+      
+      // Vamos disparar a requisição, e o resultado ficará pendente
+      setState({ ...state, pokemon: null, error: null, status: 'pending' })
 
       // (Isso é para habilitar o estado de carregamento ao alternar entre diferentes
       // pokémon.)
@@ -41,17 +61,21 @@ function PokemonInfo({pokemonName}) {
       const pokemonData = await fetchPokemon(pokemonName) // 1
 
       //Atualiza a variável de estado com as informações obtidas
-      setPokemon(pokemonData) // 2
+      // setPokemon(pokemonData) // 2
 
       // Solicitação resolvida com sucesso!
-      setStatus('resolved')
+      // setStatus('resolved')
+
+      setState({ ...state, pokemon: pokemonData, status: 'resolved' })
     }
     catch(error) {
       //alert(error.message)
-      setError(error)
+      // setError(error)
 
       // A solicitação foi rejeitada por algum motivo
-      setStatus('rejected')
+      // setStatus('rejected')
+
+      setState({ ...state, error: error, status: 'rejected' })
     }
 
   }
