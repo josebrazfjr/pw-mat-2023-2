@@ -3,7 +3,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import MainMenu from './MainMenu'
+import { Link } from 'react-router-dom'
 
 export default function MainMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -29,7 +29,6 @@ export default function MainMenu() {
       >
         <MenuIcon />
             </IconButton>
-        <MainMenu />
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -39,9 +38,30 @@ export default function MainMenu() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem
+          onClick={handleClose}
+          component={Link}
+          to="/"
+          divider
+        >
+          Página inicial
+        </MenuItem>
+        
+        <MenuItem
+          onClick={handleClose}
+          component={Link}
+          to="/cars"
+        >
+          Carros
+        </MenuItem>
+        
+        <MenuItem
+          onClick={handleClose}
+          component={Link}
+          to="/customers"
+        >
+          Clientes
+        </MenuItem>
       </Menu>
     </div>
   );
